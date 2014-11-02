@@ -1,0 +1,207 @@
+<style type="text/css">
+
+
+  #chart {      
+      height: 500px;
+      background: #ddd;
+  }
+
+  text {
+      pointer-events: none;
+  }
+
+  .grandparent text {
+      font-weight: bold;
+  }
+
+  rect {
+      fill: none;
+      stroke: #fff;
+  }
+
+  rect.parent,
+  .grandparent rect {
+      stroke-width: 2px;
+  }
+
+  .grandparent rect {
+      fill: orange;
+  }
+
+  .grandparent:hover rect {
+      fill: #ee9700;
+  }
+
+  .children rect.parent,
+  .grandparent rect {
+      cursor: pointer;
+  }
+
+  .children rect.parent {
+      fill: #bbb;
+      fill-opacity: .5;
+  }
+  
+
+  .children:hover rect.child {
+      fill: #bbb;      
+  }
+
+  </style>
+
+  <!-- content-wrapper -->                    
+  <div class="col-md-10 content-wrapper">   
+    <div class="row">
+        <div class="content">        
+            <div class="col-md-4 ">
+                <ul class="breadcrumb">
+                    <li><i class="fa fa-home"></i><a href="#">Home</a></li>
+                    <li class="active">Dashboard</li>
+                </ul>
+            </div>
+            <div class="col-md-8 ">
+                <div class="top-content">
+                    <ul class="list-inline mini-stat">                        
+                        <li>
+                            <h5>TWITTER <span class="stat-value stat-color-blue"><i class="fa fa-plus-circle"></i> 150,743</span></h5>
+                            <span id="mini-bar-chart2" class="mini-bar-chart"></span>
+                        </li>
+                        <li>
+                            <h5>NEWS FEED <span class="stat-value stat-color-seagreen"><i class="fa fa-plus-circle"></i> 43,748</span></h5>
+                            <span id="mini-bar-chart3" class="mini-bar-chart"></span>
+                        </li>
+                    </ul>
+                </div>
+            </div>    
+        </div>    
+        <div class="content">
+            <div class="col-md-12">
+                <form ng-submit="searchHit(search)">
+                    <fieldset>
+                        <legend style="margin-bottom:0px">
+                            <tags-input class="bootstrap" ng-model="search" type="text" id="fa-icon-search" placeholder="Search for brand, organization ..."></tags-input>
+                        </legend>
+                    </fieldset>
+                </form>
+            </div>    
+        </div> 
+    </div>
+    <div class="row">
+        <!-- main -->
+        <div class="content">        
+            <div class="col-md-3">  
+                <div class="widget">
+                    <div class="widget-header">
+                        <h3><i class="fa fa-bar-chart-o"></i> Real time feed</h3>                                       
+                        <div class="btn-group widget-header-toolbar">
+                            <a href="#" title="Focus" class="btn-borderless btn-focus"><i class="fa fa-eye"></i></a>
+                        </div>
+                    </div>
+                    <div class="widget-content">
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-9">                              
+                <!-- WIDGET TABBED CONTENT -->
+                <div class="widget">
+                    <div class="widget-header">
+                        <h3>Live Feeds</h3>
+                        <div class="btn-group widget-header-toolbar">
+                            <a href="#" title="Focus" class="btn-borderless btn-focus"><i class="fa fa-eye"></i></a>
+                        </div>
+                        <ul class="nav nav-tabs pull-right">
+                            <li class="active"><a href data-target="#tab1" data-toggle="tab"><i class="fa fa-magnet"></i> Matching Keywords</a></li>
+                            <li><a href data-target="#tab2" data-toggle="tab"><i class="fa fa-clock-o"></i> Live Stats</a></li>
+                        </ul>
+                    </div>
+                    <div class="widget-content">
+                        <div class="tab-content no-padding">
+                            <div class="tab-pane fade in active" id="tab1">
+                                <!-- <div treemap="tree"
+                                name="formatName(name)"
+                                detail="onDetail(node)"
+                                colorLow="blue"
+                                colorMid="white"
+                                colorHigh="yellow">
+                            </div> -->
+                            <div treemap-new detail="onDetail(node)" config="treeMapConfig"></div>
+                        </div>
+                        <div class="tab-pane fade" id="tab2">
+                            <datamap 
+                              options="map.options"
+                              data="map.data"                              
+                              colors="map.colors"
+                              type="{{ map.type }}"
+                              >
+                            </datamap>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!-- END WIDGET TABBED CONTENT -->
+
+            <!-- WIDGET TASKS -->
+            <div class="widget">
+                <div class="widget-header">
+                    <h3><i class="fa fa-tasks"></i> Feeds Status</h3> <em>- Summary of Tasks</em>
+                    <div class="btn-group widget-header-toolbar">
+                        <a href="#" title="Focus" class="btn-borderless btn-focus"><i class="fa fa-eye"></i></a>
+                        <a href="#" title="Expand/Collapse" class="btn-borderless btn-toggle-expand"><i class="fa fa-chevron-up"></i></a>
+                        <a href="#" title="Remove" class="btn-borderless btn-remove"><i class="fa fa-times"></i></a>
+                    </div>
+                </div>
+                <div class="widget-content">
+                    <ul class="task-list">
+                        <li>
+                            <p>Updating Users Settings <span class="label label-danger">23%</span></p>
+                            <div class="progress progress-xs">
+                                <div class="progress-bar progress-bar-danger" role="progressbar" aria-valuenow="23" aria-valuemin="0" aria-valuemax="100" style="width:23%">
+                                    <span class="sr-only">23% Complete</span>
+                                </div>
+                            </div>
+                        </li>
+                        <li>
+                            <p>Load &amp; Stress Test <span class="label label-success">80%</span></p>
+                            <div class="progress progress-xs">
+                                <div class="progress-bar progress-bar-success" role="progressbar" aria-valuenow="80" aria-valuemin="0" aria-valuemax="100" style="width: 80%">
+                                    <span class="sr-only">80% Complete</span>
+                                </div>
+                            </div>
+                        </li>
+                        <li>
+                            <p>Data Duplication Check <span class="label label-success">100%</span></p>
+                            <div class="progress progress-xs">
+                                <div class="progress-bar progress-bar-success" role="progressbar" aria-valuenow="100" aria-valuemin="0" aria-valuemax="100" style="width: 100%">
+                                    <span class="sr-only">Success</span>
+                                </div>
+                            </div>
+                        </li>
+                        <li>
+                            <p>Twitter stream <span class="label label-warning">45%</span></p>
+                            <div class="progress progress-xs">
+                                <div class="progress-bar progress-bar-warning" role="progressbar" aria-valuenow="45" aria-valuemin="0" aria-valuemax="100" style="width: 45%">
+                                    <span class="sr-only">45% Complete</span>
+                                </div>
+                            </div>
+                        </li>
+                        <li>
+                            <p>News feed stream <span class="label label-danger">10%</span></p>
+                            <div class="progress progress-xs">
+                                <div class="progress-bar progress-bar-danger" role="progressbar" aria-valuenow="10" aria-valuemin="0" aria-valuemax="100" style="width: 10%">
+                                    <span class="sr-only">10% Complete</span>
+                                </div>
+                            </div>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+            <!-- END WIDGET TASKS -->
+
+        </div><!-- /main-content -->
+    </div><!-- /main -->
+</div>
+</div><!-- /content-wrapper -->
+
+<script src="js/vendor/king-common.min.js"></script>
+<script src="js/vendor/bootstrap.js"></script>
+

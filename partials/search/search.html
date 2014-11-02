@@ -1,0 +1,97 @@
+<ui-view>
+<div class="row">
+    <div class="col-xs-12 col-sm-5 col-md-5 col-lg-8 pull-right">        
+        <ul id="sparks">
+            <!-- <li class="sparks-info">
+                <h5> FACEBOOK <span class="txt-color-blue">2000/hr</span></h5>
+                <div class="sparkline txt-color-blue hidden-mobile hidden-md hidden-sm">
+                    <div jq-sparkline ng-model="facebook" opts="{{ {type:'bar', barColor:'#57889C', width:'89px', height:'26px'} }}"></div>
+                </div>
+            </li> -->
+            <li class="sparks-info">
+                <h5> TWITTER <span class="txt-color-purple"><i class="fa fa-arrow-circle-up"></i>&nbsp;{{tweets_rate}} / hr</span></h5>
+                <div class="sparkline txt-color-purple hidden-mobile hidden-md hidden-sm">
+                    <div jq-sparkline ng-model="twitter"  opts="{{ {type:'bar', barColor:'#6E587A', width:'89px', height:'26px'} }}"></div>
+                </div>
+            </li>
+            <li class="sparks-info">
+                <h5> NEWS FEED <span class="txt-color-greenDark">2447/hr</span></h5>
+                <div class="sparkline txt-color-greenDark hidden-mobile hidden-md hidden-sm">
+                    <div jq-sparkline ng-model="newsfeed"  opts="{{ {type:'bar', barColor:'#496949', width:'89px', height:'26px'} }}"></div>
+                </div>
+            </li>
+        </ul> 
+    </div>
+</div>
+
+<section id="widget-grid" class="">  
+    <form ng-submit="openSearch(search)" class="header-search">
+        <fieldset>
+            <legend>
+                <div class="well well-sm">
+                    <div class="input-group">
+                        <input class="form-control input-md" ng-model="search"
+                         type="text" id="fa-icon-search" placeholder="Search for brand, organization ...">
+                        <div class="input-group-btn">
+                            <button class="btn btn-default btn-primary" type="button">
+                                <i class="fa fa-search"></i> Track
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </legend>
+        </fieldset>
+    </form>
+
+    <div class="col-sm-3 well">
+        <div id="s1">                                                                  
+            <h1 class="font-md"> Search Results for <span class="semi-bold">{{search}}</span><small class="text-danger"> &nbsp;&nbsp;({{searchResult.length}} found)</small></h1>
+    
+            <div class="search-results clearfix smart-form" ng-repeat="hit in searchResult">
+                <h4><a href ng-click="openSearch(hit)" ng-bind="hit.result"></a></h4>
+                <div>
+                    <p class="note">
+                        <span ng-bind="hit.timestamp"><i class="fa fa-clock-o"></i></span>                            
+                        <a href><i class="fa fa-bar-chart-o txt-color-yellow"></i> PPI</a>
+                        <a href><i class="fa fa-bar-chart-o txt-color-yellow"></i> DI2 E&nbsp;&nbsp;</a>
+                        <a href><i class="fa fa-plus-square txt-color-yellow"></i> More</a>
+                    </p>                        
+                </div>
+
+            </div>
+           
+            <div class="text-center">
+                <hr>
+                <ul class="pagination no-margin">
+                    <li class="prev disabled">
+                        <a href>Previous</a>
+                    </li>
+                    <li class="active">
+                        <a href>1</a>
+                    </li>
+                    <li>
+                        <a href>2</a>
+                    </li>
+                    <li>
+                        <a href>3</a>
+                    </li>
+                    <li class="next">
+                        <a href>Next</a>
+                    </li>
+                </ul>
+                <br>
+                <br>
+                <br>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-sm-9 well">
+    
+    
+    </div>
+
+</section>
+
+   
+</ui-view>

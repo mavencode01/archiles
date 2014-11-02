@@ -89,7 +89,8 @@ angular.module('ds.controllers', ['ngTagsInput'])
 
         $scope.signOut = function(){                    
             $cookieStore.remove('user');
-            AuthFactory.signOut();                    
+            AuthFactory.signOut();   
+            $location.path("/signin");                 
         }
 
         $scope.searchHit = function(search){                                
@@ -126,66 +127,7 @@ angular.module('ds.controllers', ['ngTagsInput'])
 
     }
 
-    // $scope.chart = new CanvasJS.Chart("chart1", {
-    //     theme: 'theme1',    
-    //     creditText: '',            
-    //     axisY: {
-    //         title: "PPI",
-    //         labelFontSize: 16,
-    //     },
-    //     axisX: {
-    //         title: "Date time",
-    //         labelFontSize: 16,
-    //         valueFormatString: "DD MMM"
-    //     },
-    //     data: [              
-    //         {
-    //             type: "column",
-    //              dataPoints: [                            
-    //                 {x: new Date(2013,09, 26), y: 12},                            
-    //                 {x: new Date(2013,09, 28), y: 9},                            
-    //                 {x: new Date(2013,09, 30), y: 50},                           
-    //                 {x: new Date(2013,09, 31), y: 1},                            
-    //                 {x: new Date(2013,10, 2), y: 17},                            
-    //                 {x: new Date(2013,10, 4), y: 18},                            
-    //                 {x: new Date(2013,10, 8), y: 19}                            
-    //             ]
-    //         }
-    //     ]
-    //     });
-
-    //     $scope.chart.render();
-
-    //     $scope.chart2 = new CanvasJS.Chart("chart2", {
-    //             theme: 'theme2',  
-    //             creditText: '',                      
-    //             axisY: {
-    //                 title: "DI^2",
-    //                 labelFontSize: 16,
-    //             },
-    //             axisX: {
-    //                 title: "Date time",
-    //                 labelFontSize: 16,
-    //                 valueFormatString: "DD MMM"
-    //             },
-    //             data: [              
-    //                 {
-    //                     type: "bar",
-    //                     dataPoints: [                            
-    //                         {x: new Date(2013,09, 26), y: 12},
-    //                         {x: new Date(2013,09, 27), y: 13},                           
-    //                         {x: new Date(2013,09, 28), y: 9},                            
-    //                         {x: new Date(2013,09, 30), y: 50},                           
-    //                         {x: new Date(2013,09, 31), y: 1},                            
-    //                         {x: new Date(2013,10, 2), y: 17},                            
-    //                         {x: new Date(2013,10, 4), y: 18},                            
-    //                         {x: new Date(2013,10, 8), y: 19}                            
-    //                     ]
-    //                 }
-    //             ]
-    //             });
-
-    //     $scope.chart2.render();
+  
 
 }])                 
 .controller('DashboardCtrl', ['$rootScope', '$scope', '$location', '$interval', 'vertxEventBusService', 'FeedsFactory', 'SearchFactory', 'DashboardFactory', function($rootScope, $scope, $location, $interval, vertxEventBusService, FeedsFactory, SearchFactory, DashboardFactory) {
@@ -197,8 +139,8 @@ angular.module('ds.controllers', ['ngTagsInput'])
         });
 
          $scope.search = [
-            { text: 'carnival cruise' },
-            { text: 'bahamas' },
+            { text: 'twitter' },
+            { text: 'Obama' },
             { text: 'las vegas' },
             { text: 'getaway' }
           ];
@@ -212,175 +154,57 @@ angular.module('ds.controllers', ['ngTagsInput'])
         }
   
 
-        var margin = {
-            top: 1,
-            right: 1,
-            bottom: 1,
-            left: 1
-        },
-        width = 960 - margin.left - margin.right,
-        height = 200 - margin.top - margin.bottom;
 
-        $scope.treeMapConfig = {
-            'margin': margin,
-            'width': width,
-            'height': height,
-            'dataJSON': '/data/flare.json'
+        var margin = {top: 20, right: 0, bottom: 0, left: 0},
+          width = 680,
+          height = 500 - margin.top - margin.bottom;
+
+        $scope.treeMapConfig ={
+          'margin':margin,
+          'data':'data/treemap.json'
         };
 
+        $scope.tree = {}
 
-    /*
-        $scope.chartType = 'pie'
-         $scope.config = {
-              title: '', // chart title
-              tooltips: true,                      
-              labels: false, // labels on data points                      
-              // exposed events 
-              mouseover: function() {}, 
-              mouseout: function() {},
-              click: function() {},
-              // legend config
-              legend: {
-                display: true, // can be either 'left' or 'right'.
-                position: 'left',
-                // you can have html in series name
-                htmlEnabled: false
-              },
-              // override this array if you're not happy with default colors
-              colors: [],
-              innerRadius: 0, // Only on pie Charts
-              lineLegend: 'lineEnd', // Only on line Charts
-              lineCurveType: 'cardinal', // change this as per d3 guidelines to avoid smoothline
-              isAnimate: true, // run animations while rendering chart
-              yAxisTickFormat: 's' //refer tickFormats in d3 to edit this value
-            };
-
-
-            $scope.acData = {                                
-                    series: ['Sales', 'Income', '<i>Expense</i>', 'Laptops', 'Keyboards'],
-                    data: 
-                    [
-                        {
-                            x: "Sales",
-                            y: [100, 500, 0],
-                            tooltip: "this is tooltip"
-                        }, 
-                        {
-                            x: "Not Sales",
-                            y: [300, 100, 100]
-                        }, 
-                        {
-                            x: "Tax",
-                            y: [351]
-                        }, 
-                        {
-                            x: "Not Tax",
-                            y: [54, 0, 879]
-                        }
-                    ]              
-                }
-
-
-
-
-
-        $scope.chartSeries =  [{
-                    levels: [{
-                        level: 1,
-                        layoutAlgorithm: 'squarified',
-                        borderRadius: 50,
-                        borderColor: 'black',
-                        borderWidth: 1
-                    }],
-                    dataLabels: {
-                        enabled: true,
-                        style: {
-                            color: 'black',
-                            fontWeight: 'light',
-                            HcTextStroke: '1px rgba(255,255,255,0.5)'
-                        }
-                    },
-                     allowPointSelect: true,
-                        point: {
-                            events: {
-                                select: function () {
-                                    //$report.html(this.category + ': ' + this.y + ' was last selected');
-                                    //console.log("treemap node clicked");
-                                    $location.path("app/dashboard/nodes");
-                                }
+        $scope.formatName = function(name) {
+                                return name;         
                             }
-                        },
-                    type: "treemap",
-                    data: [{
-                        id: 'Carnival',
-                        color: "#3E82C7"
-                    }, {
-                        id: 'Facebook',
-                        color: "#6995C2"
-                    }, {
-                        id: 'Tesla',
-                        color: '#C9DFF5'
-                    }, {
-                        id: 'IPO',
-                        parent: 'Twitter',
-                        value: 5
-                    }, {
-                        id: 'Obama',
-                        parent: 'Twitter',
-                        value: 3
-                    }, {
-                        id: 'Election',
-                        parent: 'Twitter',
-                        value: 4
-                    }, {
-                        id: 'IPO',
-                        parent: 'Facebook',
-                        value: 4
-                    }, {
-                        id: 'Obama',
-                        parent: 'Facebook',
-                        value: 10
-                    }, {
-                        id: 'Election',
-                        parent: 'Facebook',
-                        value: 1
-                    }, {
-                        id: 'Climate',
-                        parent: 'Tesla',
-                        value: 1
-                    }, {
-                        id: 'Obama',
-                        parent: 'Tesla',
-                        value: 3
-                    }, {
-                        id: 'Election',
-                        parent: 'Tesla',
-                        value: 3
-                    }, {
-                        id: 'debate',
-                        parent: 'Climate',
-                        value: 2,
-                        color: '#264D75'
-                    }]
-                }];
 
-        $scope.chartConfig = {                                     
-            series: $scope.chartSeries,
-            title: {
-              text: ''
-            },
-            credits: {
-              enabled: false
-            },
-            loading: false,
-            size: {}
-          }
+        $scope.onDetail = function(node){            
+            console.log(node);   
+            //return node;
+        }
 
-          $scope.reflow = function () {                    
-            $scope.$broadcast('highchartsng.reflow');
-          }; 
+        DashboardFactory.matchingKeyword()
+                        .success(
+                            function(data){
+                            $scope.tree = data
+                        }).error();
 
-          */                 
+        $scope.map = {
+                      type: 'usa',                       
+                      
+                      data: [{
+                        values: [
+                          { "location": "USA", "value": 125 }                          
+                        ]
+                      }],
+                      colors: ['#666666', '#b9b9b9', '#fafafa'],
+                      options: {                        
+                        width: 780,
+                        legendHeight: 60, // optionally set the padding for the legend
+                        geographyConfig: {
+                            highlightBorderColor: '#bada55',
+                            popupTemplate: function(geography, data) {                                
+                              return '<div class="hoverinfo"> <a href>' + geography.properties.name + '</a>'
+                            },
+                            highlightBorderWidth: 3
+                          }
+                      }
+                    }
+
+       
+
 }]) 
 .controller('DashboardNodeCtrl', ['$rootScope', '$scope', '$location', '$interval', 'vertxEventBusService', 'FeedsFactory', 'SearchFactory', 'DashboardFactory', function($rootScope, $scope, $location, $interval, vertxEventBusService, FeedsFactory, SearchFactory, DashboardFactory) {
     
@@ -750,7 +574,9 @@ angular.module('ds.controllers', ['ngTagsInput'])
 
         
 
-}])                                
+}])   
+.controller('SettingsCtrl', ['$rootScope', '$scope', '$http', '$location', function($rootScope, $scope, $http, $location) {
+}])
 .controller('ProfileCtrl', ['$rootScope', '$scope', '$http', '$location', function($rootScope, $scope, $http, $location) {
 
         

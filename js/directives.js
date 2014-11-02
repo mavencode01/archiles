@@ -107,70 +107,205 @@ angular.module('ds.directives', [])
         }
     }; 
 })
-.directive('treeMap', function() {
-    return {
-        restrict: 'E',
-        replace: true,
-        template: function() {
-            return '<form>' + '<label><input type="radio" ng-model ="radioData.selected" value="size" ng-change = "changeRadio()" > Size</label>' + '<label><input type="radio" ng-model ="radioData.selected" value="count" ng-change = "changeRadio()"> Count</label>' + '</form>';
+.directive('treemapNew',function ($timeout) {
 
-        },
-        link: function(scope, element, attrs) {
-            scope.config = JSON.parse(attrs.config);
-            scope.color = d3.scale.category20c();
-            scope.radioData = {
-                'selected': 'size'
-            };
-            scope.position = function() {
-                this.style("left", function(d) {
-                    return d.x + "px";
-                })
-                    .style("top", function(d) {
-                    return d.y + "px";
-                })
-                    .style("width", function(d) {
-                    return Math.max(0, d.dx - 1) + "px";
-                })
-                    .style("height", function(d) {
-                    return Math.max(0, d.dy - 1) + "px";
-                });
-            };
-            scope.treemap = d3.layout.treemap()
-                .size([scope.config.width, scope.config.height])
-                .sticky(true)
-                .value(function(d) {
-                return d.size;
-            });
-            scope.div = d3.select("div").append("div")
-                .style("position", "relative")
-                .style("width", (scope.config.width + scope.config.margin.left + scope.config.margin.right) + "px")
-                .style("height", (scope.config.height + scope.config.margin.top + scope.config.margin.bottom) + "px")
-                .style("left", scope.config.margin.left + "px")
-                .style("top", scope.config.margin.top + "px");
-            scope.changeRadio = function() {
-                var value = scope.radioData.selected === "count" ? function() {
-                        return 1;
-                    } : function(d) {
-                        return d.size;
-                    };
-                scope.node.data(scope.treemap.value(value).nodes)
-                    .transition()
-                    .duration(1500)
-                    .call(scope.position);
-            };
-            d3.json(scope.config.dataJSON, function(error, root) {
-                scope.node = scope.div.datum(root).selectAll(".node")
-                    .data(scope.treemap.nodes)
-                    .enter().append("div")
-                    .attr("class", "node")
-                    .call(scope.position)
-                    .style("background", function(d) {
-                    return d.children ? scope.color(d.name) : null;
-                })
-                    .text(function(d) {
-                    return d.children ? null : d.name;
-                });
-            });
-        }
-    };
-});
+    return {      
+      restrict: 'A',      
+      scope: {
+        config: '=',
+        name: '&',
+        detail: '&'
+      },
+      link: function (scope, element, attrs) {
+        
+        scope.config = scope.config;
+        scope.width = $(element).width();
+        scope.height = $(element).height();
+        scope.margin = scope.config.margin;
+        scope.formatNumber = d3.format(",d");
+        scope.color = d3.scale.category20c();
+        scope.transitioning = false;
+
+
+        var x = d3.scale.linear()
+          .domain([0, scope.width])
+          .range([0,  scope.width]);
+
+        var y = d3.scale.linear()
+          .domain([0,  scope.height])
+          .range([0,  scope.height]);
+
+        scope.treemap = d3.layout.treemap()
+          .children(function(d, depth) { return depth ? null : d._children; })
+          .sort(function(a, b) { return a.value - b.value; })
+          .ratio( scope.height /  scope.width * 0.5 * (1 + Math.sqrt(5)))
+          .round(false);
+
+        scope.svg = d3.select("#chart").append("svg")
+          .attr("width",  scope.width +  scope.margin.left +  scope.margin.right)
+          .attr("height",  scope.height +  scope.margin.bottom +  scope.margin.top)
+          .style("margin-left", - scope.margin.left + "px")
+          .style("margin.right", - scope.margin.right + "px")
+          .append("g")
+          .attr("transform", "translate(" +  scope.margin.left + "," +  scope.margin.top + ")")
+          .style("shape-rendering", "crispEdges");
+
+        scope.grandparent = scope.svg.append("g")
+          .attr("class", "grandparent");
+
+        scope.grandparent.append("rect")
+          .attr("y", - scope.margin.top)
+          .attr("width",  scope.width)
+          .attr("height",  scope.margin.top);
+
+
+        scope.grandparent.append("text")
+          .attr("x", 6)
+          .attr("y", 6 -  scope.margin.top)
+          .attr("dy", ".75em");
+
+        d3.json(scope.config.data, function(root) {
+          initialize(root);
+          accumulate(root);
+          layout(root);
+          display(root);
+
+          function initialize(root) {
+            root.x = root.y = 0;
+            root.dx =  scope.width;
+            root.dy =  scope.height;
+            root.depth = 0;
+          }
+
+          // Aggregate the values for internal nodes. This is normally done by the
+          // treemap layout, but not here because of our custom implementation.
+          // We also take a snapshot of the original children (_children) to avoid
+          // the children being overwritten when when layout is computed.
+          function accumulate(d) {
+            return (d._children = d.children)
+              ? d.value = d.children.reduce(function(p, v) { return p + accumulate(v); }, 0)
+              : d.value;
+          }
+
+          // Compute the treemap layout recursively such that each group of siblings
+          // uses the same size (1×1) rather than the dimensions of the parent cell.
+          // This optimizes the layout for the current zoom state. Note that a wrapper
+          // object is created for the parent node for each group of siblings so that
+          // the parent’s dimensions are not discarded as we recurse. Since each group
+          // of sibling was laid out in 1×1, we must rescale to fit using absolute
+          // coordinates. This lets us use a viewport to zoom.
+          function layout(d) {
+            if (d._children) {
+              scope.treemap.nodes({_children: d._children});
+              d._children.forEach(function(c) {
+                c.x = d.x + c.x * d.dx;
+                c.y = d.y + c.y * d.dy;
+                c.dx *= d.dx;
+                c.dy *= d.dy;
+                c.parent = d;                
+                layout(c);
+              });
+            }
+          }
+
+          function display(d) {
+            scope.grandparent
+              .datum(d.parent)
+              .on("click", transition)
+              .select("text")
+              .text(name(d));
+
+            var g1 = scope.svg.insert("g", ".grandparent")
+              .datum(d)
+              .attr("class", "depth");
+
+            var g = g1.selectAll("g")
+              .data(d._children)
+              .enter().append("g");
+
+            g.filter(function(d) { return d._children; })
+              .classed("children", true)              
+              .on("click", transition);
+            g.selectAll(".child")
+              .data(function(d) { return d._children || [d]; })
+              .enter().append("rect")
+              .attr("class", "child")              
+              .call(rect);
+
+            g.append("rect")
+              .attr("class", "parent")
+              .call(rect)
+              .append("title")
+              .text(function(d) { return scope.formatNumber(d.value); });
+
+            g.append("text")
+              .attr("dy", ".75em")
+              .text(function(d) { return d.name; })
+              .call(text);
+
+            function transition(d) {              
+              if (scope.transitioning || !d) return;
+              scope.transitioning = true;
+
+              scope.curNode = d;                         
+              scope.$apply("detail({node:curNode})");
+
+              var g2 = display(d),
+                t1 = g1.transition().duration(750),
+                t2 = g2.transition().duration(750);
+
+              // Update the domain only after entering new elements.
+              x.domain([d.x, d.x + d.dx]);
+              y.domain([d.y, d.y + d.dy]);
+
+              // Enable anti-aliasing during the transition.
+              scope.svg.style("shape-rendering", null);
+
+              // Draw child nodes on top of parent nodes.
+              scope.svg.selectAll(".depth").sort(function(a, b) { return a.depth - b.depth; });
+
+              // Fade-in entering text.
+              g2.selectAll("text").style("fill-opacity", 0);
+
+              // Transition to the new view.
+              t1.selectAll("text").call(text).style("fill-opacity", 0);
+              t2.selectAll("text").call(text).style("fill-opacity", 1);
+              t1.selectAll("rect").call(rect);
+              t2.selectAll("rect").call(rect);
+
+              // Remove the old node when the transition is finished.
+              t1.remove().each("end", function() {
+                scope.svg.style("shape-rendering", "crispEdges");
+
+                scope.transitioning = false;
+              });
+            }
+
+            return g;
+          }
+
+          function text(text) {
+            text.attr("x", function(d) { return x(d.x) + 6; })
+              .attr("y", function(d) { return y(d.y) + 6; })
+              ;
+          }
+
+          function rect(rect) {
+            rect.attr("x", function(d) { return x(d.x); })
+              .attr("y", function(d) { return y(d.y); })
+              .attr("width", function(d) { return x(d.x + d.dx) - x(d.x); })
+              .attr("height", function(d) { return y(d.y + d.dy) - y(d.y); })
+              .style("color", function(d) { return d.parent ? scope.color(d.name) : null; })
+            ;
+          }
+          function name(d) {
+            return d.parent
+              ? name(d.parent) + "." + d.name
+              : d.name;
+          }
+        });
+      },
+      replace:true,
+      template:'<div id="chart"></div>'
+    }
+  });
