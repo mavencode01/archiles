@@ -4,43 +4,44 @@
   #chart {      
       height: 500px;
       background: #ddd;
+      margin-bottom: 5px;
   }
 
-  text {
-      pointer-events: none;
-  }
+    text {
+        pointer-events: none;
+    }
 
-  .grandparent text {
-      font-weight: bold;
-  }
+    .grandparent text {
+        font-weight: bold;
+    }
 
-  rect {
-      fill: none;
-      stroke: #fff;
-  }
+    rect {
+        fill: none;
+        stroke: #fff;
+    }
 
-  rect.parent,
-  .grandparent rect {
-      stroke-width: 2px;
-  }
+    rect.parent,
+    .grandparent rect {
+        stroke-width: 2px;
+    }
 
-  .grandparent rect {
-      fill: orange;
-  }
+    .grandparent rect {
+        fill: orange;
+    }
 
-  .grandparent:hover rect {
-      fill: #ee9700;
-  }
+    .grandparent:hover rect {
+        fill: #ee9700;
+    }
 
-  .children rect.parent,
-  .grandparent rect {
-      cursor: pointer;
-  }
+    .children rect.parent,
+    .grandparent rect {
+        cursor: pointer;
+    }
 
-  .children rect.parent {
-      fill: #bbb;
-      fill-opacity: .5;
-  }
+    .children rect.parent {
+        fill: #bbb;
+        fill-opacity: .5;
+    }
   
 
   .children:hover rect.child {
@@ -55,7 +56,7 @@
         <div class="content">        
             <div class="col-md-4 ">
                 <ul class="breadcrumb">
-                    <li><i class="fa fa-home"></i><a href="#">Home</a></li>
+                    <li><i class="fa fa-home"></i><a href>Home</a></li>
                     <li class="active">Dashboard</li>
                 </ul>
             </div>
@@ -86,7 +87,9 @@
             </div>    
         </div> 
     </div>
+
     <div class="row">
+      <ui-view>
         <!-- main -->
         <div class="content">        
             <div class="col-md-3">  
@@ -94,7 +97,7 @@
                     <div class="widget-header">
                         <h3><i class="fa fa-bar-chart-o"></i> Real time feed</h3>                                       
                         <div class="btn-group widget-header-toolbar">
-                            <a href="#" title="Focus" class="btn-borderless btn-focus"><i class="fa fa-eye"></i></a>
+                            <a href title="Focus" class="btn-borderless btn-focus"><i class="fa fa-eye"></i></a>
                         </div>
                     </div>
                     <div class="widget-content">
@@ -107,7 +110,7 @@
                     <div class="widget-header">
                         <h3>Live Feeds</h3>
                         <div class="btn-group widget-header-toolbar">
-                            <a href="#" title="Focus" class="btn-borderless btn-focus"><i class="fa fa-eye"></i></a>
+                            <a href title="Focus" class="btn-borderless btn-focus"><i class="fa fa-eye"></i></a>
                         </div>
                         <ul class="nav nav-tabs pull-right">
                             <li class="active"><a href data-target="#tab1" data-toggle="tab"><i class="fa fa-magnet"></i> Matching Keywords</a></li>
@@ -117,14 +120,7 @@
                     <div class="widget-content">
                         <div class="tab-content no-padding">
                             <div class="tab-pane fade in active" id="tab1">
-                                <!-- <div treemap="tree"
-                                name="formatName(name)"
-                                detail="onDetail(node)"
-                                colorLow="blue"
-                                colorMid="white"
-                                colorHigh="yellow">
-                            </div> -->
-                            <div treemap-new detail="onDetail(node)" config="treeMapConfig"></div>
+                            <div treemap detail="onDetail(node)" config="treeMapConfig"></div>
                         </div>
                         <div class="tab-pane fade" id="tab2">
                             <datamap 
@@ -132,6 +128,7 @@
                               data="map.data"                              
                               colors="map.colors"
                               type="{{ map.type }}"
+                              on-click="showState"
                               >
                             </datamap>
                         </div>
@@ -145,9 +142,9 @@
                 <div class="widget-header">
                     <h3><i class="fa fa-tasks"></i> Feeds Status</h3> <em>- Summary of Tasks</em>
                     <div class="btn-group widget-header-toolbar">
-                        <a href="#" title="Focus" class="btn-borderless btn-focus"><i class="fa fa-eye"></i></a>
-                        <a href="#" title="Expand/Collapse" class="btn-borderless btn-toggle-expand"><i class="fa fa-chevron-up"></i></a>
-                        <a href="#" title="Remove" class="btn-borderless btn-remove"><i class="fa fa-times"></i></a>
+                        <a href title="Focus" class="btn-borderless btn-focus"><i class="fa fa-eye"></i></a>
+                        <a href title="Expand/Collapse" class="btn-borderless btn-toggle-expand"><i class="fa fa-chevron-up"></i></a>
+                        <a href title="Remove" class="btn-borderless btn-remove"><i class="fa fa-times"></i></a>
                     </div>
                 </div>
                 <div class="widget-content">
@@ -196,8 +193,8 @@
                 </div>
             </div>
             <!-- END WIDGET TASKS -->
-
         </div><!-- /main-content -->
+      </ui-view>
     </div><!-- /main -->
 </div>
 </div><!-- /content-wrapper -->

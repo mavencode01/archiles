@@ -203,6 +203,10 @@ angular.module('ds.controllers', ['ngTagsInput'])
                       }
                     }
 
+        $scope.showState = function(geography){
+            var state = geography.properties.name;
+            $location.search('id', state).path('/app/dashboard/filter');
+        }
        
 
 }]) 
@@ -210,64 +214,12 @@ angular.module('ds.controllers', ['ngTagsInput'])
     
 }])      
 .controller('FilterDashboardCtrl', ['$rootScope', '$scope', '$location', '$interval', 'vertxEventBusService', 'FeedsFactory', 'SearchFactory', 'DashboardFactory', function($rootScope, $scope, $location, $interval, vertxEventBusService, FeedsFactory, SearchFactory, DashboardFactory) {
-   
-   $scope.chartConfig = {
-                options: {
-                    chart: {
-                        type: 'solidguage'
-                    },
-                    pane: {
-                        center: ['50%', '85%'],
-                        size: '140%',
-                        startAngle: -90,
-                        endAngle: 90,
-                        background: {
-                            backgroundColor:'#EEE',
-                            innerRadius: '60%',
-                            outerRadius: '100%',
-                            shape: 'arc'
-                        }
-                    },
-                    solidgauge: {
-                        dataLabels: {
-                            y: -30,
-                            borderWidth: 0,
-                            useHTML: true
-                        }
-                    }
-                },
-                series: [{
-                    data: [16],
-                    dataLabels: {
-                        format: '<div style="text-align:center"><span style="font-size:25px;color:black">{y}</span><br/>' + 
-                            '<span style="font-size:12px;color:silver">km/h</span></div>'
-                    }
-                }],
-                title: {
-                    text: 'Feeds Guage',
-                    y: 50
-                },
-                yAxis: {
-                    currentMin: 0,
-                    currentMax: 20,
-                    title: {
-                        y: 140
-                    },      
-                    stops: [
-                        [0.1, '#DF5353'], // red
-                        [0.5, '#DDDF0D'], // yellow
-                        [0.9, '#55BF3B'] // green
-                    ],
-                    lineWidth: 0,
-                    tickInterval: 20,
-                    tickPixelInterval: 400,
-                    tickWidth: 0,
-                    labels: {
-                        y: 15
-                    }   
-                },
-                loading: false
-            }
+
+    $scope.value = 0.42;
+    $scope.guageValue = 0.99;
+    $scope.force = {
+        'data': 'data/readme.json'
+    }
 
 }])     
 .controller('AnalyticsCtrl', ['$rootScope', '$scope', '$http', '$location', function($rootScope, $scope, $http, $location) {
