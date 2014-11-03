@@ -465,7 +465,9 @@ angular.module('ds.directives', [])
       //path mark the time since my birth until the current date
       scope.foreground = scope.meter.append("path")
                                     .attr("class", "foreground")
-                                    .attr("d", scope.arc.endAngle(scope.twoPi * .42));
+                                    .attr("d", scope.arc.endAngle(scope.twoPi * scope.value));
+
+    
 
       scope.text = scope.meter.append("text")
                               .attr("class", "text")
