@@ -130,7 +130,7 @@ angular.module('ds.controllers', ['ngTagsInput'])
   
 
 }])                 
-.controller('DashboardCtrl', ['$rootScope', '$scope', '$location', '$interval', 'vertxEventBusService', 'FeedsFactory', 'SearchFactory', 'DashboardFactory', function($rootScope, $scope, $location, $interval, vertxEventBusService, FeedsFactory, SearchFactory, DashboardFactory) {
+.controller('DashboardCtrl', ['$rootScope', '$scope', '$location', '$interval', 'vertxEventBusService', 'FeedsFactory', 'SearchFactory', 'DashboardFactory','$state', function($rootScope, $scope, $location, $interval, vertxEventBusService, FeedsFactory, SearchFactory, DashboardFactory,$state) {
 
         vertxEventBusService.on('com.deepstream.injestion.tweets', function(tweets) {
              $scope.$apply(function() {
@@ -144,6 +144,21 @@ angular.module('ds.controllers', ['ngTagsInput'])
             { text: 'las vegas' },
             { text: 'getaway' }
           ];
+
+        $scope.modelRealTime =
+        {
+            'sendData': {
+                1: 'Triangles can be made easily using CSS also without any images. This trick requires only div tags and some CSS works. To get this trick, just use the code below.',
+                2: 'List 2',
+                3: 'List 3',
+                4: 'List 4',
+                5: 'List 5',
+                6: 'List 6'
+            },
+            'visible':3,
+            'interval':2000
+
+        };
 
         DashboardFactory.countryMap().success(function(data){
                             $scope.datamap = data;
@@ -170,9 +185,8 @@ angular.module('ds.controllers', ['ngTagsInput'])
                                 return name;         
                             }
 
-        $scope.onDetail = function(node){            
-            console.log(node);   
-            //return node;
+        $scope.onDetail = function(node) {
+            console.log(node);
         }
 
         DashboardFactory.matchingKeyword()
@@ -205,7 +219,8 @@ angular.module('ds.controllers', ['ngTagsInput'])
 
         $scope.showState = function(geography){
             var state = geography.properties.name;
-            $location.search('id', state).path('/app/dashboard/filter');
+            $state.go('app.dashboard.filter',{'id': state});
+
         }
        
 

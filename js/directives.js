@@ -39,7 +39,7 @@ angular.module('ds.directives', [])
         link: function(scope, element, attrs) {
           var chart = null;
   
-           scope.$watch("datamap" , function(n,o){ 
+           scope.$watch("datamap" , function(n,o){
             
             if (scope.datamap) {
                 var statesValues = jvm.values.apply({}, jvm.values(scope.datamap.states));
@@ -162,6 +162,9 @@ angular.module('ds.directives', [])
           .attr("x", 6)
           .attr("y", 6 -  scope.margin.top)
           .attr("dy", ".75em");
+        scope.clickNode = function (node) {
+         console.log(node,'add by Arta');
+        }
 
         d3.json(scope.config.data, function(root) {
           initialize(root);
@@ -224,13 +227,14 @@ angular.module('ds.directives', [])
               .enter().append("g");
 
             g.filter(function(d) { return d._children; })
-              .classed("children", true)              
+              .classed("children", true)
               .on("click", transition);
             g.selectAll(".child")
               .data(function(d) { return d._children || [d]; })
               .enter().append("rect")
               .attr("class", "child")           
               .call(rect);
+
 
             g.append("rect")
               .attr("class", "parent")
@@ -243,8 +247,8 @@ angular.module('ds.directives', [])
               .text(function(d) { return d.name; })
               .call(text);
 
-            function transition(d) { 
-                    
+            function transition(d) {
+                console.log(1);
               if (scope.transitioning || !d) return;
               scope.transitioning = true;
 
@@ -296,6 +300,7 @@ angular.module('ds.directives', [])
               .attr("y", function(d) { return y(d.y); })
               .attr("width", function(d) { return x(d.x + d.dx) - x(d.x); })
               .attr("height", function(d) { return y(d.y + d.dy) - y(d.y); })
+                .attr("ng-click",function(d){ return 'clickNode('+ d.name+')'})
               .style("color", function(d) { return d.parent ? scope.color(d.name) : null; })
             ;
           }
@@ -531,4 +536,29 @@ angular.module('ds.directives', [])
       replace: true,
       template:"<div id=guage></div>"
     }
-  });
+  }).directive('easyticker',function () {
+        return {
+            restrict: 'E',
+            templateUrl: 'partials/directives/easy.html',
+            link: function(scope, element, attrs){
+                scope.config = JSON.parse(attrs.config);
+                scope.viewData = scope.config.sendData;
+                angular.element('.vticker').easyTicker({
+                    direction: (scope.config.direction)?scope.config.direction:'up',
+                    easing: (scope.config.easing)?scope.config.easing:'easeInOutBack',
+                    speed:  (scope.config.speed)?scope.config.speed:'slow',
+                    interval: (scope.config.interval)?scope.config.interval:2000,
+                    height:  (scope.config.height)?scope.config.height:'auto',
+                    visible: (scope.config.visible) ? scope.config.visible :1,
+                    mousePause: (scope.config.mousePause)?scope.config.mousePause:0,
+                    controls: {
+                        up: '.up',
+                        down: '.down',
+                        toggle: '.toggle',
+                        stopText: 'Stop !!!'
+                    }
+                }).data('easyTicker');
+            }
+
+        }
+    });
