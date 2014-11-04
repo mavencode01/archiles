@@ -226,8 +226,8 @@ angular.module('ds.directives', [])
               .data(d._children)
               .enter().append("g");
 
-            g.filter(function(d) { return d._children; })
-              .classed("children", true)
+            //g.filter(function(d) { return d._children; })
+              g.classed("children", true)
               .on("click", transition);
             g.selectAll(".child")
               .data(function(d) { return d._children || [d]; })
@@ -248,11 +248,15 @@ angular.module('ds.directives', [])
               .call(text);
 
             function transition(d) {
-                console.log(1);
+                if (!d._children){
+                    console.log('last Item');
+                    return true;
+                }
+              console.log(d);
               if (scope.transitioning || !d) return;
               scope.transitioning = true;
 
-              scope.curNode = d;                         
+              scope.curNode = d;
               scope.$apply("detail({node:curNode})");
 
               var g2 = display(d),
@@ -300,7 +304,6 @@ angular.module('ds.directives', [])
               .attr("y", function(d) { return y(d.y); })
               .attr("width", function(d) { return x(d.x + d.dx) - x(d.x); })
               .attr("height", function(d) { return y(d.y + d.dy) - y(d.y); })
-                .attr("ng-click",function(d){ return 'clickNode('+ d.name+')'})
               .style("color", function(d) { return d.parent ? scope.color(d.name) : null; })
             ;
           }
