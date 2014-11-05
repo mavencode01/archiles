@@ -63,7 +63,7 @@ var ds = angular
                             }
                         })
                         .state('app.dashboard.filter', {
-                            url: "/filter?id",
+                            url: "/filter/:id",
                             templateUrl: "partials/dashboard/filter_dashboard.html",
                             controller: 'FilterDashboardCtrl',
                             data: {

@@ -1,4 +1,14 @@
 'use strict';
+function makeId  ()
+{
+    var text = "";
+    var possible = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz";
+
+    for( var i=0; i < 5; i++ )
+        text += possible.charAt(Math.floor(Math.random() * possible.length));
+
+    return text;
+};
 
 angular.module('ds.directives', [])
  .directive('jqSparkline', [function () {
@@ -39,7 +49,7 @@ angular.module('ds.directives', [])
         link: function(scope, element, attrs) {
           var chart = null;
   
-           scope.$watch("datamap" , function(n,o){ 
+           scope.$watch("datamap" , function(n,o){
             
             if (scope.datamap) {
                 var statesValues = jvm.values.apply({}, jvm.values(scope.datamap.states));
@@ -162,6 +172,9 @@ angular.module('ds.directives', [])
           .attr("x", 6)
           .attr("y", 6 -  scope.margin.top)
           .attr("dy", ".75em");
+        scope.clickNode = function (node) {
+         console.log(node,'add by Arta');
+        }
 
         d3.json(scope.config.data, function(root) {
           initialize(root);
@@ -223,14 +236,15 @@ angular.module('ds.directives', [])
               .data(d._children)
               .enter().append("g");
 
-            g.filter(function(d) { return d._children; })
-              .classed("children", true)              
+            //g.filter(function(d) { return d._children; })
+              g.classed("children", true)
               .on("click", transition);
             g.selectAll(".child")
               .data(function(d) { return d._children || [d]; })
               .enter().append("rect")
               .attr("class", "child")           
               .call(rect);
+
 
             g.append("rect")
               .attr("class", "parent")
@@ -243,12 +257,16 @@ angular.module('ds.directives', [])
               .text(function(d) { return d.name; })
               .call(text);
 
-            function transition(d) { 
-                    
+            function transition(d) {
+                if (!d._children){
+                    console.log('last Item');
+                    return true;
+                }
+              console.log(d);
               if (scope.transitioning || !d) return;
               scope.transitioning = true;
 
-              scope.curNode = d;                         
+              scope.curNode = d;
               scope.$apply("detail({node:curNode})");
 
               var g2 = display(d),
@@ -426,15 +444,17 @@ angular.module('ds.directives', [])
       template:'<div id="force"></div>'
     }
   })
-.directive('radialProgress', function () {
+.directive('radialProgress', function (){
     return {
       restrict: 'E',      
       scope : {
           value: '='   
       },
       link: function (scope, element, attrs) {
-        scope.width = $(element).width();
-        scope.height = $(element).height();
+        scope.width = 180;
+        scope.height = 180;
+        scope.divId = makeId();
+
 
         scope.color = d3.scale.category20();
 
@@ -447,8 +467,10 @@ angular.module('ds.directives', [])
           .innerRadius(60)
           .outerRadius(80);
 
-      //appending the body with an svg. then appending the svg with a group "g" 
-       scope.svg = d3.select('#radial').append("svg")
+      //appending the body with an svg. then appending the svg with a group "g"
+        element.parent().append("<div id="+scope.divId+"></div>");
+        element.remove();
+       scope.svg = d3.select("#"+scope.divId ).append("svg")
             .attr("width", scope.width)
             .attr("height", scope.height)
             .append("g")
@@ -475,9 +497,7 @@ angular.module('ds.directives', [])
                               .attr("fill", "#666")
                               .text(scope.formatPercent(scope.value));
 
-      },
-      replace: true,
-      template:"<div id=radial></div>"
+      }
     }
   })
 .directive('guageRadial', function () {
@@ -489,9 +509,7 @@ angular.module('ds.directives', [])
       link: function (scope, element, attrs) {
         scope.width = $(element).width();
         scope.height = $(element).height();
-
         scope.color = d3.scale.category20();
-
         scope.twoPi = 2 * Math.PI;
         scope.radius = 110;
         scope.formatPercent = d3.format(".0%");
@@ -531,4 +549,29 @@ angular.module('ds.directives', [])
       replace: true,
       template:"<div id=guage></div>"
     }
-  });
+  }).directive('easyticker',function () {
+        return {
+            restrict: 'E',
+            templateUrl: 'partials/directives/easy.html',
+            link: function(scope, element, attrs){
+                scope.config = JSON.parse(attrs.config);
+                scope.viewData = scope.config.sendData;
+                angular.element('.vticker').easyTicker({
+                    direction: (scope.config.direction)?scope.config.direction:'up',
+                    easing: (scope.config.easing)?scope.config.easing:'easeInOutBack',
+                    speed:  (scope.config.speed)?scope.config.speed:'slow',
+                    interval: (scope.config.interval)?scope.config.interval:2000,
+                    height:  (scope.config.height)?scope.config.height:'auto',
+                    visible: (scope.config.visible) ? scope.config.visible :1,
+                    mousePause: (scope.config.mousePause)?scope.config.mousePause:0,
+                    controls: {
+                        up: '.up',
+                        down: '.down',
+                        toggle: '.toggle',
+                        stopText: 'Stop !!!'
+                    }
+                }).data('easyTicker');
+            }
+
+        }
+    });
