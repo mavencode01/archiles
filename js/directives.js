@@ -1,4 +1,14 @@
 'use strict';
+function makeId  ()
+{
+    var text = "";
+    var possible = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz";
+
+    for( var i=0; i < 5; i++ )
+        text += possible.charAt(Math.floor(Math.random() * possible.length));
+
+    return text;
+};
 
 angular.module('ds.directives', [])
  .directive('jqSparkline', [function () {
@@ -434,15 +444,17 @@ angular.module('ds.directives', [])
       template:'<div id="force"></div>'
     }
   })
-.directive('radialProgress', function () {
+.directive('radialProgress', function (){
     return {
       restrict: 'E',      
       scope : {
           value: '='   
       },
       link: function (scope, element, attrs) {
-        scope.width = $(element).width();
-        scope.height = $(element).height();
+        scope.width = 180;
+        scope.height = 180;
+        scope.divId = makeId();
+
 
         scope.color = d3.scale.category20();
 
@@ -455,8 +467,10 @@ angular.module('ds.directives', [])
           .innerRadius(60)
           .outerRadius(80);
 
-      //appending the body with an svg. then appending the svg with a group "g" 
-       scope.svg = d3.select('#radial').append("svg")
+      //appending the body with an svg. then appending the svg with a group "g"
+        element.parent().append("<div id="+scope.divId+"></div>");
+        element.remove();
+       scope.svg = d3.select("#"+scope.divId ).append("svg")
             .attr("width", scope.width)
             .attr("height", scope.height)
             .append("g")
@@ -483,9 +497,7 @@ angular.module('ds.directives', [])
                               .attr("fill", "#666")
                               .text(scope.formatPercent(scope.value));
 
-      },
-      replace: true,
-      template:"<div id=radial></div>"
+      }
     }
   })
 .directive('guageRadial', function () {
@@ -497,9 +509,7 @@ angular.module('ds.directives', [])
       link: function (scope, element, attrs) {
         scope.width = $(element).width();
         scope.height = $(element).height();
-
         scope.color = d3.scale.category20();
-
         scope.twoPi = 2 * Math.PI;
         scope.radius = 110;
         scope.formatPercent = d3.format(".0%");
