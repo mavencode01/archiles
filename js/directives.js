@@ -172,9 +172,7 @@ angular.module('ds.directives', [])
           .attr("x", 6)
           .attr("y", 6 -  scope.margin.top)
           .attr("dy", ".75em");
-        scope.clickNode = function (node) {
-         console.log(node,'add by Arta');
-        }
+        
 
         d3.json(scope.config.data, function(root) {
           initialize(root);
@@ -258,14 +256,15 @@ angular.module('ds.directives', [])
               .call(text);
 
             function transition(d) {
-                if (!d._children){
-                    console.log('last Item');
+                if (!d._children){                    
+                    scope.curNode = d;                    
+                    scope.$apply("detail({node:curNode})");
                     return true;
                 }
-              console.log(d);
+              //console.log(d);
               if (scope.transitioning || !d) return;
               scope.transitioning = true;
-
+              
               scope.curNode = d;
               scope.$apply("detail({node:curNode})");
 
@@ -500,56 +499,7 @@ angular.module('ds.directives', [])
       }
     }
   })
-.directive('guageRadial', function () {
-    return {
-      restrict: 'E',      
-      scope : {
-          value: '='   
-      },
-      link: function (scope, element, attrs) {
-        scope.width = $(element).width();
-        scope.height = $(element).height();
-        scope.color = d3.scale.category20();
-        scope.twoPi = 2 * Math.PI;
-        scope.radius = 110;
-        scope.formatPercent = d3.format(".0%");
-
-      scope.arc = d3.svg.arc()
-          .startAngle(0)
-          .innerRadius(60)
-          .outerRadius(80);
-
-      //appending the body with an svg. then appending the svg with a group "g" 
-       scope.svg = d3.select('#guage').append("svg")
-            .attr("width", scope.width)
-            .attr("height", scope.height)
-            .append("g")
-            .attr("transform", "translate(" + scope.width / 2 + "," + scope.height / 2 + ")");
-
-      //giving the group a class
-      scope.meter = scope.svg.attr("class", "progress-meter");
-
-      //background path
-      scope.meter.append("path")
-                  .attr("class", "background")
-                  .attr("d", scope.arc.endAngle(scope.twoPi));
-
-      //path mark the time since my birth until the current date
-      scope.foreground = scope.meter.append("path")
-                                    .attr("class", "foreground")
-                                    .attr("d", scope.arc.endAngle(scope.twoPi * scope.value));
-
-      scope.text = scope.meter.append("text")
-                              .attr("class", "text")
-                              .attr("text-anchor", "middle")
-                              .attr("fill", "#666")
-                              .text(scope.formatPercent(scope.value));
-
-      },
-      replace: true,
-      template:"<div id=guage></div>"
-    }
-  }).directive('easyticker',function () {
+.directive('easyticker',function () {
         return {
             restrict: 'E',
             templateUrl: 'partials/directives/easy.html',
