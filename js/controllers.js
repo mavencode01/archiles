@@ -44,7 +44,7 @@ angular.module('ds.controllers', ['ngTagsInput'])
 
         $scope.displayError = false;
 
-        $scope.register = function(){                        
+        $scope.register = function(){              
             AuthFactory.signup($scope.user).success(function(response){
                 $scope.displayError = false;
 

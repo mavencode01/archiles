@@ -5,14 +5,17 @@
 		<div class="logo"><a href><img src="assets/img/deepstream-logo2.png" alt="" /></a></div>
 		
 		<div class="register-box center-block">
-			<form>
+			<form ng-submit="register()">
 				<p class="title">Create Your Account</p>
-				<input type="email" placeholder="email" class="form-control">
-				<input type="password" placeholder="password" class="form-control">
-				<input type="password" placeholder="repeat password" class="form-control">
+				<input type="text" ng-model="user.firstname" placeholder="firstname" class="form-control">
+				<input type="text" ng-model="user.lastname" placeholder="lastname" class="form-control">
+				<input type="text" ng-model="user.company" placeholder="company" class="form-control">
+				<input type="email" ng-model="user.email" placeholder="email" class="form-control">
+				<input type="password" ng-model="user.password" placeholder="password" class="form-control">
+				<input type="password" ng-model="passwordAgain" placeholder="repeat password" class="form-control">
 				<div class="simple-checkbox">
-					<input type="checkbox" id="checkbox1" name="checkbox1">
-					<label for="checkbox1">I accept the <a href>Terms &amp; Agreements</a></label>
+					<input ng-model="agree" type="checkbox" id="agreement" name="agreement">
+					<label for="agreement">I accept the <a href>Terms &amp; Agreements</a></label>
 				</div>
 				<button class="btn btn-custom-primary btn-lg btn-block btn-register"><i class="fa fa-check-circle"></i> Create Account</button>
 			</form>

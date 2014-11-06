@@ -261,7 +261,6 @@ angular.module('ds.directives', [])
                     scope.$apply("detail({node:curNode})");
                     return true;
                 }
-              //console.log(d);
               if (scope.transitioning || !d) return;
               scope.transitioning = true;
               
