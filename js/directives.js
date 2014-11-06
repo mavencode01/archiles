@@ -501,15 +501,12 @@ angular.module('ds.directives', [])
 .directive('easyticker',function () {
         return {
             restrict: 'E',
-            template: '<div class="vticker">'+
-            '<ul>'+
-            '<li ng-repeat="line in viewData">{{line}}</li>'+
-    '</ul>'+
-   ' </div>',
-               //templateUrl: 'partials/directives/easy.html',
+            scope: {
+              config: '='
+            },
+            templateUrl: 'partials/directives/easy.html',
             link: function(scope, element, attrs){
-                scope.config = JSON.parse(attrs.model);
-                scope.viewData = scope.config.sendData;
+                scope.viewData = scope.config.data;
                 angular.element('.vticker').easyTicker({
                     direction: (scope.config.direction)?scope.config.direction:'up',
                     speed:  (scope.config.speed)?scope.config.speed:'slow',

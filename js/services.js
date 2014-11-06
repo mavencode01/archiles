@@ -115,6 +115,11 @@ angular.module('ds.services', [])
 
     var DashboardFactory = {};
 
+    DashboardFactory.realtimeTweets = function(query) {
+        var url = 'data/country.json';
+        return $http.get(url);
+    };
+
     DashboardFactory.countryMap = function(query) {
         var url = 'data/country.json';
         return $http.get(url);

@@ -148,7 +148,7 @@ angular.module('ds.controllers', ['ngTagsInput'])
 
         $scope.modelRealTime =
         {
-            'sendData': {
+            'data': {
                 1: 'Triangles can be made easily using CSS also without any images. This trick requires only div tags and some CSS works. To get this trick, just use the code below.',
                 2: 'List 2',
                 3: 'List 3',
