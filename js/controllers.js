@@ -186,9 +186,9 @@ angular.module('ds.controllers', ['ngTagsInput'])
                                 return name;         
                             }
 
-       /* $scope.onDetail = function(node) {
+       $scope.onDetail = function(node) {
             console.log(node);
-        }*/
+        }
 
         DashboardFactory.matchingKeyword()
                         .success(
