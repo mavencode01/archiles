@@ -69,6 +69,7 @@ var ds = angular
                             data: {
                                 ncyBreadcrumbLabel: 'Filter Dashboard',
                                 ncyBreadcrumbParent: 'dashboard'
+
                             }
                         }) 
                         .state('app.dashboard.nodes', {

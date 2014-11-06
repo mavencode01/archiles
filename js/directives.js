@@ -446,7 +446,7 @@ angular.module('ds.directives', [])
   })
 .directive('radialProgress', function (){
     return {
-      restrict: 'E',      
+      restrict: 'E',
       scope : {
           value: '='   
       },
@@ -552,13 +552,17 @@ angular.module('ds.directives', [])
   }).directive('easyticker',function () {
         return {
             restrict: 'E',
-            templateUrl: 'partials/directives/easy.html',
+            template: '<div class="vticker">'+
+            '<ul>'+
+            '<li ng-repeat="line in viewData">{{line}}</li>'+
+    '</ul>'+
+   ' </div>',
+               //templateUrl: 'partials/directives/easy.html',
             link: function(scope, element, attrs){
-                scope.config = JSON.parse(attrs.config);
+                scope.config = JSON.parse(attrs.model);
                 scope.viewData = scope.config.sendData;
-                angular.element('.vticker').easyTicker({
+                jQuery(document).ready(function (){                angular.element('.vticker').easyTicker({
                     direction: (scope.config.direction)?scope.config.direction:'up',
-                    easing: (scope.config.easing)?scope.config.easing:'easeInOutBack',
                     speed:  (scope.config.speed)?scope.config.speed:'slow',
                     interval: (scope.config.interval)?scope.config.interval:2000,
                     height:  (scope.config.height)?scope.config.height:'auto',
@@ -571,6 +575,9 @@ angular.module('ds.directives', [])
                         stopText: 'Stop !!!'
                     }
                 }).data('easyTicker');
+
+                } );
+
             }
 
         }
