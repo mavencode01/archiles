@@ -511,7 +511,7 @@ angular.module('ds.directives', [])
             link: function(scope, element, attrs){
                 scope.config = JSON.parse(attrs.model);
                 scope.viewData = scope.config.sendData;
-                jQuery(document).ready(function (){                angular.element('.vticker').easyTicker({
+                angular.element('.vticker').easyTicker({
                     direction: (scope.config.direction)?scope.config.direction:'up',
                     speed:  (scope.config.speed)?scope.config.speed:'slow',
                     interval: (scope.config.interval)?scope.config.interval:2000,
@@ -525,8 +525,6 @@ angular.module('ds.directives', [])
                         stopText: 'Stop !!!'
                     }
                 }).data('easyTicker');
-
-                } );
 
             }
 
