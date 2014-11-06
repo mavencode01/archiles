@@ -10,6 +10,7 @@ angular.module('ds.controllers', ['ngTagsInput'])
 
         $scope.msgStatus = '';
 
+
         $scope.$on('signup-successful', function(){
             $scope.msgStatus = 'Yeh! - Sign up successful, please sign in';
             $scope.displayAlert = true;
