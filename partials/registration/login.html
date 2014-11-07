@@ -7,22 +7,17 @@
 		<div class="login-box center-block">
 			<form class="form-horizontal" role="form">
 				<p class="title">Enter your credentials</p>
+
 				<div class="form-group">
 					<label for="username" class="control-label sr-only">Email</label>
 					<div class="col-sm-12">
-						<div class="input-group">
-							<input type="text" placeholder="email" class="form-control">
-							<span class="input-group-addon"><i class="fa fa-user"></i></span>
-						</div>
+						<input type="text" ng-model="email" placeholder="email" class="form-control">
 					</div>
 				</div>
 				<label for="password" class="control-label sr-only">Password</label>
 				<div class="form-group">
 					<div class="col-sm-12">
-						<div class="input-group">
-							<input type="password" placeholder="password" class="form-control">
-							<span class="input-group-addon"><i class="fa fa-lock"></i></span>
-						</div>
+						<input type="password" ng-model="password" placeholder="password" class="form-control">
 					</div>
 				</div>
 				<div class="simple-checkbox">
