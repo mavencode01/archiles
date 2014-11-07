@@ -50,6 +50,7 @@
 
   </style>
 
+<ui-view>
   <!-- content-wrapper -->                    
   <div class="col-md-10 content-wrapper">   
     <div class="row">
@@ -64,7 +65,7 @@
                 <div class="top-content">
                     <ul class="list-inline mini-stat">                        
                         <li>
-                            <h5>TWITTER <span class="stat-value stat-color-blue"><i class="fa fa-plus-circle"></i> 150,743</span></h5>
+                            <h5>TWITTER <span class="stat-value stat-color-blue"><i class="fa fa-twitter"></i> 150,743</span></h5>
                             <span id="mini-bar-chart2" class="mini-bar-chart"></span>
                         </li>
                         <li>
@@ -88,14 +89,13 @@
         </div> 
     </div>
 
-    <div class="row">
-      <ui-view>
+    <div class="row">      
         <!-- main -->
         <div class="content">        
             <div class="col-md-3">  
                 <div class="widget">
                     <div class="widget-header">
-                        <h3><i class="fa fa-bar-chart-o"></i> Real time feed</h3>                                       
+                        <h3><i class="fa fa-spinner fa-spin"></i> Real time feed</h3>                                       
                         <div class="btn-group widget-header-toolbar">
                             <a href title="Focus" class="btn-borderless btn-focus"><i class="fa fa-eye"></i></a>
                         </div>
@@ -194,11 +194,11 @@
                 </div>
             </div>
             <!-- END WIDGET TASKS -->
-        </div><!-- /main-content -->
-      </ui-view>
+        </div><!-- /main-content -->     
     </div><!-- /main -->
 </div>
 </div><!-- /content-wrapper -->
+ </ui-view>
 
 <script src="js/vendor/king-common.min.js"></script>
 <script src="js/vendor/bootstrap.js"></script>
