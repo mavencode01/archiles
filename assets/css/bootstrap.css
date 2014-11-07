@@ -3373,8 +3373,8 @@ select[multiple].input-group-sm > .input-group-btn > .btn {
   vertical-align: middle;
 }
 .input-group-addon {
-  padding: 6px 12px;
-  font-size: 14px;
+  padding: 0px 0px;
+  font-size: 14px;  
   font-weight: normal;
   line-height: 1;
   color: #555;
@@ -3419,6 +3419,7 @@ select[multiple].input-group-sm > .input-group-btn > .btn {
 .input-group-btn:first-child > .btn-group:not(:first-child) > .btn {
   border-top-left-radius: 0;
   border-bottom-left-radius: 0;
+  border: 0px;
 }
 .input-group-addon:last-child {
   border-left: 0;

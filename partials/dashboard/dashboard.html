@@ -25,9 +25,9 @@
         stroke-width: 2px;
     }
 
-    .grandparent rect {
+/*    .grandparent rect {
         fill: orange;
-    }
+    }*/
 
     .grandparent:hover rect {
         fill: #ee9700;
@@ -81,7 +81,23 @@
                 <form ng-submit="searchHit(search)">
                     <fieldset>
                         <legend style="margin-bottom:0px">
-                            <tags-input class="bootstrap" ng-model="search" type="text" id="fa-icon-search" placeholder="Search for brand, organization ..."></tags-input>
+                            <div class="input-group">
+                                <tags-input class="bootstrap" ng-model="search" type="text" id="fa-icon-search" placeholder="Search for brand, organization ..."></tags-input>
+                                <div class="btn-group input-group-addon">
+                                    <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown">Save  <span class="caret"></span></button>
+                                    <ul class="dropdown-menu dropdown-menu-right" role="menu">
+                                        <li class="dropdown-header">Categories</li>
+                                        <li><a href>Politics</a></li>
+                                        <li><a href>Social</a></li>
+                                        <li><a href>Business</a></li>                                                     
+                                        <li><a href>Health</a></li>
+                                        <li><a href>Technology</a></li>
+                                        <li><a href>Sports</a></li>                                        
+                                        <li class="divider"></li>                                        
+                                        <li><a href>Save As</a></li>
+                                    </ul>
+                                </div>
+                            </div>                            
                         </legend>
                     </fieldset>
                 </form>

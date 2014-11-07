@@ -172,7 +172,7 @@ angular.module('ds.controllers', ['ngTagsInput'])
 
         $scope.treeMapConfig ={
           'margin':margin,
-          'data':'data/treemap.json'
+          'data':'data/treemap1.json'
         };
 
         $scope.tree = {}

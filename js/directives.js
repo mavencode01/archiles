@@ -239,7 +239,7 @@ angular.module('ds.directives', [])
               .attr("y", function(d) { return y(d.y); })
               .attr("width", function(d) { return x(d.x + d.dx) - x(d.x); })
               .attr("height", function(d) { return y(d.y + d.dy) - y(d.y); })
-              .style("color", function(d) { return d.parent ? scope.color(d.name) : null; })
+              .style("fill", function(d) { return d.parent ? scope.color(d.name) : null; })
             ;
           }
           function name(d) {
