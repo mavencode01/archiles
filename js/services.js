@@ -116,7 +116,7 @@ angular.module('ds.services', [])
     var DashboardFactory = {};
 
     DashboardFactory.realtimeTweets = function(query) {
-        var url = 'data/country.json';
+        var url = 'data/tweets.json';
         return $http.get(url);
     };
 

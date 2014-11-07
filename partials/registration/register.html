@@ -2,7 +2,7 @@
 <div class="wrapper full-page-wrapper page-register text-center">
 	
 	<div class="inner-page">
-		<div class="logo"><a href><img src="assets/img/deepstream-logo2.png" alt="" /></a></div>
+		<div class="logo"><a href="#/signin"><img src="assets/img/deepstream-logo2.png" alt="" /></a></div>
 		
 		<div class="register-box center-block">
 			<form ng-submit="register()">
@@ -12,7 +12,7 @@
 				<input type="text" ng-model="user.company" placeholder="company" class="form-control">
 				<input type="email" ng-model="user.email" placeholder="email" class="form-control">
 				<input type="password" ng-model="user.password" placeholder="password" class="form-control">
-				<input type="password" ng-model="passwordAgain" placeholder="repeat password" class="form-control">
+				<input type="password" ng-model="repeatPassword" placeholder="repeat password" class="form-control">
 				<div class="simple-checkbox">
 					<input ng-model="agree" type="checkbox" id="agreement" name="agreement">
 					<label for="agreement">I accept the <a href>Terms &amp; Agreements</a></label>

@@ -506,23 +506,23 @@ angular.module('ds.directives', [])
             },
             templateUrl: 'partials/directives/easy.html',
             link: function(scope, element, attrs){
+              scope.$watch('config', function () {                
                 scope.viewData = scope.config.data;
                 angular.element('.vticker').easyTicker({
-                    direction: (scope.config.direction)?scope.config.direction:'up',
-                    speed:  (scope.config.speed)?scope.config.speed:'slow',
-                    interval: (scope.config.interval)?scope.config.interval:2000,
-                    height:  (scope.config.height)?scope.config.height:'auto',
-                    visible: (scope.config.visible) ? scope.config.visible :1,
-                    mousePause: (scope.config.mousePause)?scope.config.mousePause:0,
+                    direction: 'up',
+                    speed:  'slow',
+                    interval: 2000,
+                    height:  'auto',
+                    visible: 17,
+                    mousePause: scope.config.mousePause ? scope.config.mousePause: 0,
                     controls: {
                         up: '.up',
                         down: '.down',
                         toggle: '.toggle',
                         stopText: 'Stop !!!'
                     }
-                }).data('easyTicker');
-
+                }).data('easyTicker');              
+              });
             }
-
         }
     });

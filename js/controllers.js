@@ -146,20 +146,16 @@ angular.module('ds.controllers', ['ngTagsInput'])
             { text: 'getaway' }
           ];
 
-        $scope.modelRealTime =
-        {
-            'data': {
-                1: 'Triangles can be made easily using CSS also without any images. This trick requires only div tags and some CSS works. To get this trick, just use the code below.',
-                2: 'List 2',
-                3: 'List 3',
-                4: 'List 4',
-                5: 'List 5',
-                6: 'List 6'
-            },
-            'visible':3,
-            'interval':2000
-
-        };
+        $scope.tweetsRealTime = {}
+        DashboardFactory.realtimeTweets()
+                        .success(function(tweets){
+                            $scope.tweetsRealTime =
+                            {
+                                'data': tweets,
+                                'visible': 20,
+                                'interval': 2000                                
+                            };
+                        }).error();    
 
         DashboardFactory.countryMap().success(function(data){
                             $scope.datamap = data;
@@ -171,9 +167,8 @@ angular.module('ds.controllers', ['ngTagsInput'])
   
 
 
-        var margin = {top: 20, right: 0, bottom: 0, left: 0},
-          width = 680,
-          height = 500 - margin.top - margin.bottom;
+        var margin = {top: 20, right: 0, bottom: 0, left: 0}
+          
 
         $scope.treeMapConfig ={
           'margin':margin,

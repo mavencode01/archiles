@@ -1,6 +1,10 @@
-<div class="vticker">
-    <ul>
-        <li ng-repeat="line in viewData">{{line}}</li>
+<div class="vticker knowledge">
+    <ul class="list-unstyled">
+        <li ng-repeat="line in viewData">
+        	<span>
+        	<i class="fa fa-comment-o pull-left"></i>
+        	<a href>{{line.tweet}}</a>
+        	</span>
+        </li>
     </ul>
 </div>
-
